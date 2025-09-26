@@ -10,6 +10,8 @@ if [ "$1" = "python" ] && [ "$3" = "manage.py" ] && [ "$4" = "runserver" ]; then
   echo "Creating static & media directories if not exist..."
   mkdir -p /mnt/static
   mkdir -p /mnt/media
+  mkdir -p /mnt/logger
+
 
   echo "Collecting static files..."
   python manage.py collectstatic --noinput

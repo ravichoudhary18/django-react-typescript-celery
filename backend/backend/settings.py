@@ -157,6 +157,9 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
 # Pillow safety
 Image.MAX_IMAGE_PIXELS = 933120000
 
+LOG_DIR = Path("/mnt/logger")
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
