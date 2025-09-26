@@ -156,3 +156,34 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
 
 # Pillow safety
 Image.MAX_IMAGE_PIXELS = 933120000
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',  # Adjust to INFO, WARNING, etc., as needed
+            'class': 'backend.logging_handlers.CompressedTimedRotatingFileHandler',  # Path to your custom class
+            'filename': '/mnt/logger/logging.log',
+            'when': 'midnight',
+            'interval': 1,
+            'backupCount': 0,  # No auto-deletion; archives accumulate
+            'encoding': 'utf-8',
+            'delay': True,  # Defer file creation until first log
+            'archive_dir': '/mnt/archives',  # Custom param for archive folder
+        },
+    },
+    'loggers': {
+        'django': {  # Logs from Django core
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        # Add your app loggers here, e.g.,
+        'backend': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
