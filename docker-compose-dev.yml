@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: python -Xfrozen_modules=off manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+      - ./mount:/mnt
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.dev
+    depends_on:
+      # - db
+      - redis
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    env_file:
+    - .env.dev
+    depends_on:
+      - web
+    networks:
+      - app-network
+
+  # db:
+  #   image: postgres:15
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  # env_file:
+    # - .env.dev
+  #   environment:
+  #     - .env.dev
+  #     - POSTGRES_DB=${DB_NAME}
+  #     - POSTGRES_USER=${DB_USER}
+  #     - POSTGRES_PASSWORD=${DB_PASSWORD}
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - app-network
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: celery -A backend worker --loglevel=info
+    volumes:
+      - ./backend:/app # mount local code for hot reload
+    env_file:
+      - .env.dev
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+volumes:
+  #   postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
