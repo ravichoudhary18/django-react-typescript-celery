@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+extend-exclude = ["migrations"]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "DJ"]
+ignore = ["E501"]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+[tool.ruff.lint.isort]
+known-first-party = ["backend"]

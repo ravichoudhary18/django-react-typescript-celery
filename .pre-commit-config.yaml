@@ -1,0 +1,33 @@
+# Pre-commit hooks for Python (backend via Ruff) and JavaScript/TypeScript (frontend)
+# Requires Python 3.13 and Node.js 20
+repos:
+  # Ruff for Python linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.1
+    hooks:
+      - id: ruff
+        language_version: python3.13
+        files: ^backend/.*\.py$
+        args: [--fix]
+
+  # ESLint for frontend
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.12.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - eslint@9.12.0
+          - eslint-plugin-react@7.37.1
+          - eslint-plugin-react-hooks@5.0.0
+          - "@typescript-eslint/eslint-plugin@8.8.1"
+          - "@typescript-eslint/parser@8.8.1"
+          - eslint-plugin-prettier@5.2.1
+          - eslint-config-prettier@9.1.0
+        files: ^frontend/src/.*\.(js|jsx|ts|tsx)$
+
+  # Prettier for frontend formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        files: ^frontend/src/.*\.(js|jsx|ts|tsx|json|css|scss|md)$
