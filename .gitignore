@@ -210,3 +210,4 @@ mnt/
 .env.dev
 .env.prod
 .env
+redis.conf

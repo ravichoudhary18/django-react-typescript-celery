@@ -163,6 +163,13 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+
+    'formatters': {
+        'default': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+
     'handlers': {
         'file': {
             'level': 'DEBUG',  # Adjust to INFO, WARNING, etc., as needed
@@ -174,15 +181,16 @@ LOGGING = {
             'encoding': 'utf-8',
             'delay': True,  # Defer file creation until first log
             'archive_dir': '/mnt/archives',  # Custom param for archive folder
+            'formatter': 'default',  # Added formatter
         },
     },
+
     'loggers': {
         'django': {  # Logs from Django core
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        # Add your app loggers here, e.g.,
         'backend': {
             'handlers': ['file'],
             'level': 'DEBUG',
